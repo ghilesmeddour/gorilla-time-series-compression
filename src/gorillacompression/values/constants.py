@@ -21,3 +21,5 @@ INIT_CONSTS = {
         'pack_format': '>e',
     },
 }
+
+BLOCK_SIZE_ADJUSTMENT = 1

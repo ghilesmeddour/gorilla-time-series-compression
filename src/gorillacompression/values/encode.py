@@ -118,7 +118,7 @@ class ValuesEncoder:
             # Encode length of the meaningful XORed value.
             length_of_the_meaningful_xored_value = self.n_bits_value - n_leading_zeros - n_trailing_zeros
             self.bit_array += util.int2ba(
-                length_of_the_meaningful_xored_value,
+                length_of_the_meaningful_xored_value - C.BLOCK_SIZE_ADJUSTMENT,
                 length=self.n_bits_length_of_the_meaningful_xored_value)
 
             self.previous_n_leading_zeros = n_leading_zeros
