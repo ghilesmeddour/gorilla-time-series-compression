@@ -74,6 +74,23 @@ class TestValuesEncoding(unittest.TestCase):
             self.assertEqual(gc.ValuesEncoder.encode_all(values), content)
             self.assertEqual(gc.ValuesDecoder.decode_all(content), values)
 
+    def test_block_size_64_bits(self):
+        values = [
+            -0.39263690585168304, -0.39263690585168304, -0.39263690585168304,
+            0.450762617155903, 0.450762617155903, 0.450762617155903,
+            -0.284155454538896
+        ]
+
+        values_encoder = gc.ValuesEncoder()
+
+        for v in values:
+            values_encoder.encode_next(v)
+
+        content = values_encoder.get_encoded()
+
+        self.assertEqual(gc.ValuesEncoder.encode_all(values), content)
+        self.assertEqual(gc.ValuesDecoder.decode_all(content), values)
+
 
 class TestPairsEncoding(unittest.TestCase):
     def test_simple(self):

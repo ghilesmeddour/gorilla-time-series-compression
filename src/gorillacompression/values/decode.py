@@ -50,7 +50,8 @@ class ValuesDecoder:
                         self.n_bits_number_of_leading_zeros))
                 self.length_of_the_meaningful_xored_value = util.ba2int(
                     self.__read_bits_and_move_forward(
-                        self.n_bits_length_of_the_meaningful_xored_value))
+                        self.n_bits_length_of_the_meaningful_xored_value)
+                ) + C.BLOCK_SIZE_ADJUSTMENT
                 self.n_trailing_zeros = self.n_bits_value - self.n_leading_zeros - self.length_of_the_meaningful_xored_value
 
             meaningful_bits_of_the_xored_value = self.__read_bits_and_move_forward(
