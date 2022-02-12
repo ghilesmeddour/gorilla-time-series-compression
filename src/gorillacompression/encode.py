@@ -61,8 +61,9 @@ class PairsEncoder:
         return result
 
     @staticmethod
-    def encode_all(pairs: Iterable[Tuple[int, float]]) -> PairsGorillaContent:
-        pairs_encoder = PairsEncoder()
+    def encode_all(pairs: Iterable[Tuple[int, float]],
+                   float_format='f64') -> PairsGorillaContent:
+        pairs_encoder = PairsEncoder(float_format=float_format)
         for ts, v in pairs:
             pairs_encoder.encode_next(ts, v)
         return pairs_encoder.get_encoded()
