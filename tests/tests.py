@@ -159,7 +159,7 @@ class TestPairsEncoding(unittest.TestCase):
 
                 content = pairs_encoder.get_encoded()
 
-                # TODO: choose a different error precision depending 
+                # TODO: choose a different error precision depending
                 # on the float format and value for a more accurate test
                 precision_error = 0.001
 
