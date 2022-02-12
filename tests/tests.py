@@ -4,8 +4,7 @@ import random
 
 import numpy as np
 
-sys.path.insert(0, '..')
-import src.gorillacompression as gc
+import gorillacompression as gc
 
 
 class TestTimestampsEncoding(unittest.TestCase):
