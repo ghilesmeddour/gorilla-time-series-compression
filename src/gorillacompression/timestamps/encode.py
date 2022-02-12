@@ -20,6 +20,7 @@ class TimestampsEncoder:
         The minimum acceptable timestamp delta. Encoding
         is not done if the calculated delta is lower.
     """
+
     def __init__(self,
                  bit_array: Union[bitarray, None] = None,
                  min_timestamp_delta: int = C.DEFAULT_MIN_TIMESTAMP_DELTA):

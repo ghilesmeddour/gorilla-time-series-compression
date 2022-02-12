@@ -7,6 +7,7 @@ import src.gorillacompression as gc
 
 
 class TestTimestampsEncoding(unittest.TestCase):
+
     def test_simple(self):
         timestamps = [10, 20, 40, 40, 40, 90, 500, 147483647]
         ts_encoder = gc.TimestampsEncoder()
@@ -44,6 +45,7 @@ class TestTimestampsEncoding(unittest.TestCase):
 
 
 class TestValuesEncoding(unittest.TestCase):
+
     def test_simple(self):
         values = [15.995, 0.35, 15.36, 0.0005, 0.0005, 0.0005, 0.0005, 152.3]
 
@@ -93,6 +95,7 @@ class TestValuesEncoding(unittest.TestCase):
 
 
 class TestPairsEncoding(unittest.TestCase):
+
     def test_simple(self):
         values = [15.995, 0.35, 15.36, 0.0005, 0.0005, 0.0005, 0.0005, 152.3]
         timestamps = [10, 20, 40, 40, 40, 90, 500, 147483647]

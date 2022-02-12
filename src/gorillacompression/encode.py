@@ -18,6 +18,7 @@ class PairsEncoder:
         xored value).
         See `gorillacompression.values.contants.INIT_CONSTS`.
     """
+
     def __init__(self, float_format='f64'):
         self.bit_array = bitarray(endian='big')
 

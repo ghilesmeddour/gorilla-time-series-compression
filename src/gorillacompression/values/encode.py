@@ -22,6 +22,7 @@ class ValuesEncoder:
         (first value, number of leading zeros, length of
         the meaningful xored value). See `C.INIT_CONSTS`.
     """
+
     def __init__(self, bit_array=None, float_format='f64'):
         if float_format not in C.INIT_CONSTS.keys():
             raise ValueError(

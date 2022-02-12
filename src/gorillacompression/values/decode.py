@@ -9,6 +9,7 @@ from .result import ValuesGorillaContent
 
 
 class ValuesDecoder:
+
     def __init__(self, bit_array, float_format):
         self.bit_array = bit_array
 

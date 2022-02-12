@@ -10,6 +10,7 @@ class TimestampsDecoder:
     """
     Gorilla Timestamps Decoder.
     """
+
     def __init__(self, bit_array):
         self.bit_array = bit_array
         self.is_first_value_read = False
