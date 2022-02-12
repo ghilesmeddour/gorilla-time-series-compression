@@ -2,6 +2,8 @@ import sys
 import unittest
 import random
 
+import numpy as np
+
 sys.path.insert(0, '..')
 import src.gorillacompression as gc
 
@@ -135,3 +137,33 @@ class TestPairsEncoding(unittest.TestCase):
 
             self.assertEqual(gc.PairsEncoder.encode_all(pairs), content)
             self.assertEqual(gc.PairsDecoder.decode_all(content), pairs)
+
+    def test_random_different_float_formats(self):
+        random.seed(1)
+        sizes = [random.randint(0, 1000) for _ in range(10)]
+
+        for ff in ['f64', 'f32', 'f16']:
+            for size in sizes:
+                values = [random.random() for _ in range(size)]
+                timestamps = [
+                    random.randint(0, gc.timestamps.constants.MAX_TIMESTAMP)
+                    for _ in range(size)
+                ]
+                timestamps = sorted(timestamps)
+
+                pairs = list(zip(timestamps, values))
+
+                pairs_encoder = gc.PairsEncoder(float_format=ff)
+
+                for ts, v in pairs:
+                    pairs_encoder.encode_next(ts, v)
+
+                content = pairs_encoder.get_encoded()
+
+                # TODO: choose a different error precision depending 
+                # on the float format and value for a more accurate test
+                precision_error = 0.001
+
+                self.assertTrue((np.absolute(
+                    np.array(gc.PairsDecoder.decode_all(content)) -
+                    np.array(pairs)) < precision_error).all())
