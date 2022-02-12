@@ -163,6 +163,10 @@ class TestPairsEncoding(unittest.TestCase):
                 # on the float format and value for a more accurate test
                 precision_error = 0.001
 
+                self.assertEqual(
+                    gc.PairsEncoder.encode_all(pairs, float_format=ff),
+                    content)
+
                 self.assertTrue((np.absolute(
                     np.array(gc.PairsDecoder.decode_all(content)) -
                     np.array(pairs)) < precision_error).all())
