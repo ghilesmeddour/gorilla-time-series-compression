@@ -63,6 +63,21 @@ class PairsEncoder:
     @staticmethod
     def encode_all(pairs: Iterable[Tuple[int, float]],
                    float_format='f64') -> PairsGorillaContent:
+        """
+        Encode a list of pairs (timestamp, value) and return the encoded 
+        content.
+
+        Parameters
+        ----------
+        pairs : Iterable[Tuple[int, float]]
+            Iterable of (timestamp, value) pairs.
+        float_format : {{'f64', 'f32', 'f16'}}, default 'f64'
+            Value float format. This parameter determines the number
+            of bits that will be used to encode the different informations
+            (first value, number of leading zeros, length of the meaningful
+            xored value).
+            See `gorillacompression.values.contants.INIT_CONSTS`.
+        """
         pairs_encoder = PairsEncoder(float_format=float_format)
         for ts, v in pairs:
             pairs_encoder.encode_next(ts, v)
