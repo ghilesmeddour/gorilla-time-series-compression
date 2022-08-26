@@ -1,3 +1,6 @@
+## Version 0.2.1 (2022-08-26)
+- Expose `float_format` parameter in `ValuesEncoder.encode_all`. [#4]
+
 ## Version 0.2.0 (2022-02-12)
 - Expose `float_format` parameter in `encode_all`. [#3]
 - Add unit test for different float formats.
