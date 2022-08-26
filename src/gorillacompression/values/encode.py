@@ -145,8 +145,23 @@ class ValuesEncoder:
         return result
 
     @staticmethod
-    def encode_all(values: Iterable[float]) -> ValuesGorillaContent:
-        vals_encoder = ValuesEncoder()
+    def encode_all(values: Iterable[float],
+                   float_format='f64') -> ValuesGorillaContent:
+        """
+        Encode a list of values and return the encoded content.
+
+        Parameters
+        ----------
+        values : Iterable[float]
+            Values to encode.
+        float_format : {{'f64', 'f32', 'f16'}}, default 'f64'
+            Value float format. This parameter determines the number
+            of bits that will be used to encode the different informations
+            (first value, number of leading zeros, length of the meaningful
+            xored value).
+            See `gorillacompression.values.contants.INIT_CONSTS`.
+        """
+        vals_encoder = ValuesEncoder(float_format=float_format)
         for v in values:
             vals_encoder.encode_next(v)
         return vals_encoder.get_encoded()
