@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="gorillacompression",
-    version="0.2.0",
+    version="0.2.1",
     author="Ghiles Meddour",
     author_email="ghiles.meddour@munic.io",
     description="Gorilla Time Series Compression",
