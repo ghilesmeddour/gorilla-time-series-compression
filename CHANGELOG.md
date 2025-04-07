@@ -1,3 +1,7 @@
+## Version 0.2.2 (2025-04-07)
+- Migrate to Astral uv.
+- Pin bitarray v2.
+
 ## Version 0.2.1 (2022-08-26)
 - Expose `float_format` parameter in `ValuesEncoder.encode_all`. [#4]
 
