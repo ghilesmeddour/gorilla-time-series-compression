@@ -26,8 +26,8 @@ class TimestampsDecoder:
         # The very first timestamp.
         if not self.is_first_value_read:
             timestamp = util.ba2int(
-                self.__read_bits_and_move_forward(
-                    C.N_BITS_FOR_FIRST_TIMESTAMP))
+                self.__read_bits_and_move_forward(C.N_BITS_FOR_FIRST_TIMESTAMP)
+            )
             self.previous_timestamp = timestamp
             self.is_first_value_read = True
             return self.previous_timestamp
@@ -48,15 +48,16 @@ class TimestampsDecoder:
 
             # Move forward on the bit array.
             _ = self.__read_bits_and_move_forward(
-                C.TIMESTAMP_ENCODING['bits_for_control_value'][i])
+                C.TIMESTAMP_ENCODING["bits_for_control_value"][i]
+            )
 
-            n_bits_to_read = C.TIMESTAMP_ENCODING['bits_for_value'][i]
+            n_bits_to_read = C.TIMESTAMP_ENCODING["bits_for_value"][i]
             value = self.__read_bits_and_move_forward(n_bits_to_read)
 
             decoded_value = util.ba2int(value)
 
             # [0,255] becomes [-128,127]
-            decoded_value -= C.TIMESTAMP_ENCODING['max_value'][i]
+            decoded_value -= C.TIMESTAMP_ENCODING["max_value"][i]
 
             # [-128,127] becomes [-128,128] without the zero in the middle
             if decoded_value >= 0:
@@ -69,11 +70,9 @@ class TimestampsDecoder:
 
     @staticmethod
     def decode_all(content: TimestampsGorillaContent) -> List[int]:
-        bit_array = bitarray(endian='big')
-        bit_array.frombytes(content['encoded'])
+        bit_array = bitarray(endian="big")
+        bit_array.frombytes(content["encoded"])
 
         ts_decoder = TimestampsDecoder(bit_array)
 
-        return [
-            ts_decoder.decode_next() for _ in range(content['nb_timestamps'])
-        ]
+        return [ts_decoder.decode_next() for _ in range(content["nb_timestamps"])]

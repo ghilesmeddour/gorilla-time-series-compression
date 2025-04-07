@@ -23,31 +23,34 @@ class ValuesEncoder:
         the meaningful xored value). See `C.INIT_CONSTS`.
     """
 
-    def __init__(self, bit_array=None, float_format='f64'):
+    def __init__(self, bit_array=None, float_format="f64"):
         if float_format not in C.INIT_CONSTS.keys():
             raise ValueError(
-                'Unexpected `float_format` value ({}). Sould be one of f64, f32, f16.'
-                .format(float_format))
+                "Unexpected `float_format` value ({}). Sould be one of f64, f32, f16.".format(
+                    float_format
+                )
+            )
 
         self.float_format = float_format
-        self.n_bits_value = C.INIT_CONSTS[float_format]['n_bits_value']
+        self.n_bits_value = C.INIT_CONSTS[float_format]["n_bits_value"]
         self.n_bits_number_of_leading_zeros = C.INIT_CONSTS[float_format][
-            'n_bits_number_of_leading_zeros']
-        self.n_bits_length_of_the_meaningful_xored_value = C.INIT_CONSTS[
-            float_format]['n_bits_length_of_the_meaningful_xored_value']
-        self.pack_format = C.INIT_CONSTS[float_format]['pack_format']
+            "n_bits_number_of_leading_zeros"
+        ]
+        self.n_bits_length_of_the_meaningful_xored_value = C.INIT_CONSTS[float_format][
+            "n_bits_length_of_the_meaningful_xored_value"
+        ]
+        self.pack_format = C.INIT_CONSTS[float_format]["pack_format"]
 
         # TODO: use this and previous.
-        self.max_n_leading_zeros = (
-            1 << self.n_bits_number_of_leading_zeros) - 1
+        self.max_n_leading_zeros = (1 << self.n_bits_number_of_leading_zeros) - 1
 
         if bit_array is None:
-            self.bit_array = bitarray(endian='big')
+            self.bit_array = bitarray(endian="big")
         else:
             self.bit_array = bit_array
 
-        self.current_value_bits = bitarray(endian='big')
-        self.previous_value_bits = bitarray(endian='big')
+        self.current_value_bits = bitarray(endian="big")
+        self.previous_value_bits = bitarray(endian="big")
 
         self.previous_n_leading_zeros = None
         self.previous_n_trailing_zeros = None
@@ -71,7 +74,7 @@ class ValuesEncoder:
         """
         self.nb_values += 1
 
-        self.current_value_bits = bitarray(endian='big')
+        self.current_value_bits = bitarray(endian="big")
         self.current_value_bits.frombytes(pack(self.pack_format, value))
 
         # The very first value.
@@ -100,10 +103,12 @@ class ValuesEncoder:
 
         # The block of meaningful bits falls within the block of previous
         # meaningful bits, so we can use previous block information.
-        if self.previous_n_leading_zeros is not None \
-            and self.previous_n_trailing_zeros is not None \
-            and n_leading_zeros >= self.previous_n_leading_zeros \
-            and n_trailing_zeros >= self.previous_n_trailing_zeros:
+        if (
+            self.previous_n_leading_zeros is not None
+            and self.previous_n_trailing_zeros is not None
+            and n_leading_zeros >= self.previous_n_leading_zeros
+            and n_trailing_zeros >= self.previous_n_trailing_zeros
+        ):
             # Control bit for using previous block information.
             self.bit_array.append(0)
         # The block of meaningful bits doesn't fall within the block of previous
@@ -114,21 +119,26 @@ class ValuesEncoder:
 
             # Encode number of leading zeros.
             self.bit_array += util.int2ba(
-                n_leading_zeros, length=self.n_bits_number_of_leading_zeros)
+                n_leading_zeros, length=self.n_bits_number_of_leading_zeros
+            )
 
             # Encode length of the meaningful XORed value.
-            length_of_the_meaningful_xored_value = self.n_bits_value - n_leading_zeros - n_trailing_zeros
+            length_of_the_meaningful_xored_value = (
+                self.n_bits_value - n_leading_zeros - n_trailing_zeros
+            )
             self.bit_array += util.int2ba(
                 length_of_the_meaningful_xored_value - C.BLOCK_SIZE_ADJUSTMENT,
-                length=self.n_bits_length_of_the_meaningful_xored_value)
+                length=self.n_bits_length_of_the_meaningful_xored_value,
+            )
 
             self.previous_n_leading_zeros = n_leading_zeros
             self.previous_n_trailing_zeros = n_trailing_zeros
 
         # Encode meaningful bits of the XORed value.
-        meaningful_xored_value = xored_value[self.previous_n_leading_zeros:self
-                                             .n_bits_value -
-                                             self.previous_n_trailing_zeros]
+        meaningful_xored_value = xored_value[
+            self.previous_n_leading_zeros : self.n_bits_value
+            - self.previous_n_trailing_zeros
+        ]
 
         self.bit_array += meaningful_xored_value
         self.previous_value_bits = self.current_value_bits
@@ -137,16 +147,15 @@ class ValuesEncoder:
 
     def get_encoded(self) -> ValuesGorillaContent:
         result: ValuesGorillaContent = {
-            'encoded': self.bit_array.tobytes(),
-            'nb_values': self.nb_values,
-            'float_format': self.float_format
+            "encoded": self.bit_array.tobytes(),
+            "nb_values": self.nb_values,
+            "float_format": self.float_format,
         }
 
         return result
 
     @staticmethod
-    def encode_all(values: Iterable[float],
-                   float_format='f64') -> ValuesGorillaContent:
+    def encode_all(values: Iterable[float], float_format="f64") -> ValuesGorillaContent:
         """
         Encode a list of values and return the encoded content.
 

@@ -19,15 +19,16 @@ class PairsEncoder:
         See `gorillacompression.values.contants.INIT_CONSTS`.
     """
 
-    def __init__(self, float_format='f64'):
-        self.bit_array = bitarray(endian='big')
+    def __init__(self, float_format="f64"):
+        self.bit_array = bitarray(endian="big")
 
         self.nb_pairs = 0
         self.float_format = float_format
 
         self.timestamps_encoder = TimestampsEncoder(bit_array=self.bit_array)
-        self.values_encoder = ValuesEncoder(bit_array=self.bit_array,
-                                            float_format=self.float_format)
+        self.values_encoder = ValuesEncoder(
+            bit_array=self.bit_array, float_format=self.float_format
+        )
 
     def encode_next(self, timestamp: int, value: float) -> bool:
         """
@@ -54,18 +55,19 @@ class PairsEncoder:
 
     def get_encoded(self) -> PairsGorillaContent:
         result: PairsGorillaContent = {
-            'encoded': self.bit_array.tobytes(),
-            'nb_pairs': self.nb_pairs,
-            'float_format': self.float_format,
+            "encoded": self.bit_array.tobytes(),
+            "nb_pairs": self.nb_pairs,
+            "float_format": self.float_format,
         }
 
         return result
 
     @staticmethod
-    def encode_all(pairs: Iterable[Tuple[int, float]],
-                   float_format='f64') -> PairsGorillaContent:
+    def encode_all(
+        pairs: Iterable[Tuple[int, float]], float_format="f64"
+    ) -> PairsGorillaContent:
         """
-        Encode a list of pairs (timestamp, value) and return the encoded 
+        Encode a list of pairs (timestamp, value) and return the encoded
         content.
 
         Parameters

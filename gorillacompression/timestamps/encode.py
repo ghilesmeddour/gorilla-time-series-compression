@@ -21,11 +21,13 @@ class TimestampsEncoder:
         is not done if the calculated delta is lower.
     """
 
-    def __init__(self,
-                 bit_array: Union[bitarray, None] = None,
-                 min_timestamp_delta: int = C.DEFAULT_MIN_TIMESTAMP_DELTA):
+    def __init__(
+        self,
+        bit_array: Union[bitarray, None] = None,
+        min_timestamp_delta: int = C.DEFAULT_MIN_TIMESTAMP_DELTA,
+    ):
         if bit_array is None:
-            self.bit_array = bitarray(endian='big')
+            self.bit_array = bitarray(endian="big")
         else:
             self.bit_array = bit_array
 
@@ -69,7 +71,7 @@ class TimestampsEncoder:
     def __encode_next(self, timestamp: int) -> bool:
         if not (0 <= timestamp <= C.MAX_TIMESTAMP):
             warnings.warn(
-                f'The timestamp {timestamp} cannot be encoded, should be between 0 and {C.MAX_TIMESTAMP}.'
+                f"The timestamp {timestamp} cannot be encoded, should be between 0 and {C.MAX_TIMESTAMP}."
             )
             return False
 
@@ -77,16 +79,16 @@ class TimestampsEncoder:
 
         if delta < self.min_timestamp_delta and self.previous_timestamp != 0:
             warnings.warn(
-                f'`delta` ({delta}) is less than the acceptable minimum (< {self.min_timestamp_delta}).'
+                f"`delta` ({delta}) is less than the acceptable minimum (< {self.min_timestamp_delta})."
             )
             return False
 
         # The very first timestamp.
         if self.nb_timestamps == 0:
             # Store the first timestamp as is.
-            self.bit_array += util.int2ba(timestamp,
-                                          length=C.N_BITS_FOR_FIRST_TIMESTAMP,
-                                          endian='big')
+            self.bit_array += util.int2ba(
+                timestamp, length=C.N_BITS_FOR_FIRST_TIMESTAMP, endian="big"
+            )
             self.previous_timestamp = timestamp
             return True
 
@@ -109,22 +111,23 @@ class TimestampsEncoder:
 
         if abs_delta_of_delta >= C.MAX_MAX_VALUE:
             warnings.warn(
-                f'`abs_delta_of_delta` ({abs_delta_of_delta}) is too big to be encoded (> {C.MAX_MAX_VALUE}).'
+                f"`abs_delta_of_delta` ({abs_delta_of_delta}) is too big to be encoded (> {C.MAX_MAX_VALUE})."
             )
             return False
 
-        for (bits_for_value, control_value,
-             max_value) in zip(C.TIMESTAMP_ENCODING['bits_for_value'],
-                               C.TIMESTAMP_ENCODING['control_value'],
-                               C.TIMESTAMP_ENCODING['max_value']):
+        for bits_for_value, control_value, max_value in zip(
+            C.TIMESTAMP_ENCODING["bits_for_value"],
+            C.TIMESTAMP_ENCODING["control_value"],
+            C.TIMESTAMP_ENCODING["max_value"],
+        ):
             if abs_delta_of_delta < max_value:
                 self.bit_array.extend(control_value)
                 # Make this value between [0, max_value]
                 encoded_value = delta_of_delta + max_value
 
-                self.bit_array += util.int2ba(encoded_value,
-                                              length=bits_for_value,
-                                              endian='big')
+                self.bit_array += util.int2ba(
+                    encoded_value, length=bits_for_value, endian="big"
+                )
                 break
 
         self.previous_timestamp = timestamp
@@ -134,8 +137,8 @@ class TimestampsEncoder:
 
     def get_encoded(self) -> TimestampsGorillaContent:
         result: TimestampsGorillaContent = {
-            'encoded': self.bit_array.tobytes(),
-            'nb_timestamps': self.nb_timestamps
+            "encoded": self.bit_array.tobytes(),
+            "nb_timestamps": self.nb_timestamps,
         }
 
         return result

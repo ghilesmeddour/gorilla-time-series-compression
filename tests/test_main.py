@@ -8,7 +8,6 @@ import gorillacompression as gc
 
 
 class TestTimestampsEncoding(unittest.TestCase):
-
     def test_simple(self):
         timestamps = [10, 20, 40, 40, 40, 90, 500, 147483647]
         ts_encoder = gc.TimestampsEncoder()
@@ -39,14 +38,11 @@ class TestTimestampsEncoding(unittest.TestCase):
 
             content = ts_encoder.get_encoded()
 
-            self.assertEqual(gc.TimestampsEncoder.encode_all(timestamps),
-                             content)
-            self.assertEqual(gc.TimestampsDecoder.decode_all(content),
-                             timestamps)
+            self.assertEqual(gc.TimestampsEncoder.encode_all(timestamps), content)
+            self.assertEqual(gc.TimestampsDecoder.decode_all(content), timestamps)
 
 
 class TestValuesEncoding(unittest.TestCase):
-
     def test_simple(self):
         values = [15.995, 0.35, 15.36, 0.0005, 0.0005, 0.0005, 0.0005, 152.3]
 
@@ -79,9 +75,13 @@ class TestValuesEncoding(unittest.TestCase):
 
     def test_block_size_64_bits(self):
         values = [
-            -0.39263690585168304, -0.39263690585168304, -0.39263690585168304,
-            0.450762617155903, 0.450762617155903, 0.450762617155903,
-            -0.284155454538896
+            -0.39263690585168304,
+            -0.39263690585168304,
+            -0.39263690585168304,
+            0.450762617155903,
+            0.450762617155903,
+            0.450762617155903,
+            -0.284155454538896,
         ]
 
         values_encoder = gc.ValuesEncoder()
@@ -96,7 +96,6 @@ class TestValuesEncoding(unittest.TestCase):
 
 
 class TestPairsEncoding(unittest.TestCase):
-
     def test_simple(self):
         values = [15.995, 0.35, 15.36, 0.0005, 0.0005, 0.0005, 0.0005, 152.3]
         timestamps = [10, 20, 40, 40, 40, 90, 500, 147483647]
@@ -141,7 +140,7 @@ class TestPairsEncoding(unittest.TestCase):
         random.seed(1)
         sizes = [random.randint(0, 1000) for _ in range(10)]
 
-        for ff in ['f64', 'f32', 'f16']:
+        for ff in ["f64", "f32", "f16"]:
             for size in sizes:
                 values = [random.random() for _ in range(size)]
                 timestamps = [
@@ -164,9 +163,15 @@ class TestPairsEncoding(unittest.TestCase):
                 precision_error = 0.001
 
                 self.assertEqual(
-                    gc.PairsEncoder.encode_all(pairs, float_format=ff),
-                    content)
+                    gc.PairsEncoder.encode_all(pairs, float_format=ff), content
+                )
 
-                self.assertTrue((np.absolute(
-                    np.array(gc.PairsDecoder.decode_all(content)) -
-                    np.array(pairs)) < precision_error).all())
+                self.assertTrue(
+                    (
+                        np.absolute(
+                            np.array(gc.PairsDecoder.decode_all(content))
+                            - np.array(pairs)
+                        )
+                        < precision_error
+                    ).all()
+                )
