@@ -1,3 +1,7 @@
+format:
+	uv sync --all-extras
+	uv run ruff format
+	
 test:
 	uv sync --all-extras
 	uv run pytest
