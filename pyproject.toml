@@ -1,6 +1,33 @@
-[build-system]
-requires = [
-    "setuptools>=42",
-    "wheel"
+[project]
+name = "gorillacompression"
+version = "0.2.1"
+description = "Python implementation of Gorilla time series compression"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [
+    { name = "Ghiles Meddour", email = "ghiles.meddour.b@gmail.com" },
 ]
-build-backend = "setuptools.build_meta"
+dependencies = [
+    "bitarray==2.9.3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "coverage>=7.8.0",
+    "devtools>=0.12.2",
+    "pytest>=8.3.5",
+    "ruff>=0.11.4",
+    "numpy>=2.2.4",
+]
+
+[project.urls]
+Repository = "https://github.com/ghilesmeddour/gorilla-time-series-compression"
+Documentation = "https://github.com/ghilesmeddour/gorilla-time-series-compression"
+Changelog = "https://github.com/ghilesmeddour/gorilla-time-series-compression/blob/main/CHANGELOG.md"
+Releases = "https://github.com/ghilesmeddour/gorilla-time-series-compression/releases"
+
+[tool.setuptools]
+packages = ["gorillacompression"]
+
+[tool.uv]
+required-version = ">=0.6.12"

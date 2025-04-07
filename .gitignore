@@ -6,3 +6,4 @@ dist
 htmlcov
 .coverage
 .mypy*
+uv.lock

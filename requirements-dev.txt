@@ -1,5 +1,0 @@
-yapf
-mypy
-coverage
-vulture
-twine

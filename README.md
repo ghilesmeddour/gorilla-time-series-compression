@@ -221,19 +221,9 @@ $ cd gorilla-time-series-compression
 ```
 
 ```
-make format
-make dead-code-check
 make test
-make type-check
-make coverage
-make build
+make cov
 ```
-
-### TODOs
-
-- [ ] Add more unit tests (`f32` and `f16` float formats are currently not tested).
-- [ ] Add profiling, benchmarks, etc.
-- [ ] Improve doc, docstring, etc.
 
 ## Other implementations
 
