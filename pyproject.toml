@@ -8,7 +8,7 @@ authors = [
     { name = "Ghiles Meddour", email = "ghiles.meddour.b@gmail.com" },
 ]
 dependencies = [
-    "bitarray==2.9.3",
+    "bitarray>=3.0.0",
 ]
 
 [project.optional-dependencies]

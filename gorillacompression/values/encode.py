@@ -96,7 +96,7 @@ class ValuesEncoder:
             self.bit_array.append(1)
 
         n_leading_zeros = xored_value.index(1)
-        n_trailing_zeros = len(xored_value) - util.rindex(xored_value, 1) - 1
+        n_trailing_zeros = len(xored_value) - xored_value.index(1, right=1) - 1
 
         if n_leading_zeros > self.max_n_leading_zeros:
             n_leading_zeros = self.max_n_leading_zeros
