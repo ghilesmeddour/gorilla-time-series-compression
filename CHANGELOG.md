@@ -1,3 +1,6 @@
+## Version 1.0.0 (2025-04-07)
+- Upgrade to bitarray v3.
+
 ## Version 0.2.2 (2025-04-07)
 - Migrate to Astral uv.
 - Pin bitarray v2.
