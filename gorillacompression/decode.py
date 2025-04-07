@@ -1,4 +1,4 @@
-from typing import Iterable, List, Tuple
+from typing import Iterable, Tuple
 from bitarray import bitarray
 
 from . import TimestampsDecoder
