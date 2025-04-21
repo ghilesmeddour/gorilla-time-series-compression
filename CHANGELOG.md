@@ -1,3 +1,8 @@
+## Version 1.0.2 (2025-04-21)
+
+- Fix imports. [#8]
+- Relax Python requirement. [#9]
+
 ## Version 1.0.0 (2025-04-07)
 
 - Upgrade to bitarray v3.

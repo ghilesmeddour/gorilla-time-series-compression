@@ -1,6 +1,6 @@
 [project]
 name = "gorillacompression"
-version = "1.0.0"
+version = "1.0.2"
 description = "Python implementation of Gorilla time series compression"
 readme = "README.md"
 requires-python = ">=3.9"
