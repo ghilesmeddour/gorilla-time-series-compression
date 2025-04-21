@@ -1,9 +1,9 @@
 from typing import List
-from bitarray import bitarray
-from bitarray import util
 
-from . import constants as C
-from .result import TimestampsGorillaContent
+from bitarray import bitarray, util
+
+from gorillacompression.timestamps import constants as C
+from gorillacompression.timestamps.result import TimestampsGorillaContent
 
 
 class TimestampsDecoder:

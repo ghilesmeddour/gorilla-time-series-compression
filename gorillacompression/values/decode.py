@@ -1,11 +1,10 @@
 from struct import unpack
 from typing import List
 
-from bitarray import bitarray
-from bitarray import util
+from bitarray import bitarray, util
 
-from . import constants as C
-from .result import ValuesGorillaContent
+from gorillacompression.values import constants as C
+from gorillacompression.values.result import ValuesGorillaContent
 
 
 class ValuesDecoder:

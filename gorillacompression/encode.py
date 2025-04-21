@@ -1,9 +1,9 @@
 from typing import Iterable, Tuple
+
 from bitarray import bitarray
 
-from . import TimestampsEncoder
-from . import ValuesEncoder
-from .result import PairsGorillaContent
+from gorillacompression import TimestampsEncoder, ValuesEncoder
+from gorillacompression.result import PairsGorillaContent
 
 
 class PairsEncoder:

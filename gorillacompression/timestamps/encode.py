@@ -1,11 +1,10 @@
-from typing import Iterable, Union
 import warnings
+from typing import Iterable, Union
 
-from bitarray import bitarray
-from bitarray import util
+from bitarray import bitarray, util
 
-from . import constants as C
-from .result import TimestampsGorillaContent
+from gorillacompression.timestamps import constants as C
+from gorillacompression.timestamps.result import TimestampsGorillaContent
 
 
 class TimestampsEncoder:
