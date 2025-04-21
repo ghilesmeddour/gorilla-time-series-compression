@@ -27,7 +27,8 @@ Changelog = "https://github.com/ghilesmeddour/gorilla-time-series-compression/bl
 Releases = "https://github.com/ghilesmeddour/gorilla-time-series-compression/releases"
 
 [tool.setuptools]
-packages = ["gorillacompression"]
+packages = ["gorillacompression", "gorillacompression.timestamps", "gorillacompression.values"]
 
 [tool.uv]
+package = true
 required-version = ">=0.6.12"
