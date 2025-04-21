@@ -3,7 +3,7 @@ name = "gorillacompression"
 version = "1.0.0"
 description = "Python implementation of Gorilla time series compression"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.9"
 authors = [
     { name = "Ghiles Meddour", email = "ghiles.meddour.b@gmail.com" },
 ]
@@ -17,7 +17,7 @@ dev = [
     "devtools>=0.12.2",
     "pytest>=8.3.5",
     "ruff>=0.11.4",
-    "numpy>=2.2.4",
+    "numpy>=2.0.0",
 ]
 
 [project.urls]
