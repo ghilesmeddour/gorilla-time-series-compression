@@ -5,6 +5,7 @@ This is an implementation (with some adaptations) of the compression algorithm d
 Gorilla compression is lossless.
 
 This library can be used in three ways:
+
 - Timestamps only compression.
 - Values only compression (useful for regular time series compression).
 - Timestamp-Value pairs compression (useful for irregular time series compression).
@@ -22,11 +23,13 @@ This implementation is based on **section 4.1** of [[1]](#1) and on the Facebook
 ## Installation
 
 To install the latest release:
+
 ```
 $ pip install gorillacompression
 ```
 
 You can also build a local package and install it:
+
 ```
 $ make build
 $ pip install dist/*.whl
@@ -62,6 +65,7 @@ In the three scenarios of compression (timestamps, values, pairs), you can use:
 The expected input timestamp is a POSIX timestamp less than 2147483647 ('January 19, 2038 04:14:07'). The delta between two successive timestamps must be greater than or equal to 0.
 
 You can use `encode_all` to encode all timestamps:
+
 ```python
 >>> content = gc.TimestampsEncoder.encode_all(timestamps)
 >>> content
@@ -71,6 +75,7 @@ You can use `encode_all` to encode all timestamps:
 ```
 
 Or you can use `encode_next` to encode one by one:
+
 ```python
 >>> ts_encoder = gc.TimestampsEncoder()
 >>> for ts in timestamps:
@@ -85,6 +90,7 @@ Or you can use `encode_next` to encode one by one:
 ### Values only compression
 
 You can use `encode_all` to encode all values:
+
 ```python
 >>> content = gc.ValuesEncoder.encode_all(values)
 >>> content
@@ -94,6 +100,7 @@ You can use `encode_all` to encode all values:
 ```
 
 Or you can use `encode_next` to encode one by one:
+
 ```python
 >>> values_encoder = gc.ValuesEncoder()
 >>> for v in values:
@@ -108,6 +115,7 @@ Or you can use `encode_next` to encode one by one:
 ### Timestamp-Value pairs compression
 
 You can use `encode_all` to encode all pairs:
+
 ```python
 >>> content = gc.PairsEncoder.encode_all(pairs)
 >>> content
@@ -117,6 +125,7 @@ You can use `encode_all` to encode all pairs:
 ```
 
 Or you can use `encode_next` to encode one by one:
+
 ```python
 >>> pairs_encoder = gc.PairsEncoder()
 >>> for (ts, v) in pairs:
@@ -136,6 +145,7 @@ Below is a brief explanation of the implemented method. (Refer to [[1]](#1) **se
 
 - The first timestamp is encoded in a fixed number of bits.
 - The following timestamps are encoded as follows:
+
 ```
   (a) Calculate the delta of delta
           D = (t_n − t_(n−1)) − (t_(n−1) − t_(n−2))
@@ -169,32 +179,42 @@ Notation
 This explanation corresponds to the case of float format `f64`, for the other formats (`f32`, `f16`), the size of some fields is different (refer to the code for more details).
 
 1. The first value is stored with no compression.
+
 ```
     +======================= 8 =======================+
     |  First value (IEEE 754, binary64, Big Endian)   |
     +======================= 8 =======================+
 ```
+
 2. If XOR with the previous is zero (same value), store
-single ‘0’ bit.
+   single ‘0’ bit.
+
 ```
     +-- 1 --+
     |   0   |
     +-- 1 --+
 ```
+
 3. When XOR is non-zero, calculate the number of leading and trailing zeros in the XOR, store bit ‘1’ followed by either a) or b):
-  * (a) (Control bit ‘0’) If the block of meaningful bits falls within the block of previous meaningful bits*, i.e., there are at least as many leading zeros and as many trailing zeros as with the previous value, use that information for the block position and just store the meaningful XORed value\*.
+
+- (a) (Control bit ‘0’) If the block of meaningful bits falls within the block of previous meaningful bits\*, i.e., there are at least as many leading zeros and as many trailing zeros as with the previous value, use that information for the block position and just store the meaningful XORed value\*.
+
 ```
     +--- 2 ---+--- length of the meaningful XORed value ---+
     |   10    |         [meaningful XORed value]           |
     +--- 2 ---+--- length of the meaningful XORed value ---+
 ```
-  * (b) (Control bit ‘1’) Store the length of the number of leading zeros in the next 5 bits, then store the length of the meaningful XORed value in the next 6 bits. Finally store the meaningful bits of the XORed value.
+
+- (b) (Control bit ‘1’) Store the length of the number of leading zeros in the next 5 bits, then store the length of the meaningful XORed value in the next 6 bits. Finally store the meaningful bits of the XORed value.
+
 ```
     +--- 2 ---+------------- 5 -------------+------------------- 6 ------------------+--- length of the meaningful XORed value ---+
     |   11    |   number of leading zeros   |   length of the meaningful XORed value |         [meaningful XORed value]           |
     +--- 2 ---+------------- 5 -------------+------------------- 6 ------------------+--- length of the meaningful XORed value ---+
 ```
+
 4. After the compression of the last value, if the length of the bitarray is not a multiple of 8, the few remaining bits are padded with zero.
+
 ```
     +---- n ----+
     |   0...0   |
@@ -203,9 +223,10 @@ single ‘0’ bit.
     n < 8
 ```
 
-(*) The terms "meaningful bits" and "meaningful XORed value" used in the original paper may be confusing.
-  - In case (b), "meaningful XORed value" is a value with absolutely no leading and trailing zero.
-  - In case (a), "meaningful XORed value" is the XORed value striped off same amount of leading and trailing zeroes as previous value delta. The meaningful bits in this case may still contain some leading and trailing zeroes.
+(\*) The terms "meaningful bits" and "meaningful XORed value" used in the original paper may be confusing.
+
+- In case (b), "meaningful XORed value" is a value with absolutely no leading and trailing zero.
+- In case (a), "meaningful XORed value" is the XORed value striped off same amount of leading and trailing zeroes as previous value delta. The meaningful bits in this case may still contain some leading and trailing zeroes.
 
 ### Timestamp-Value pairs compression
 
